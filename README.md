@@ -18,6 +18,12 @@ emitter.on('change', console.log.bind(console))
 emitter.element
 ```
 
+Change events is the new state of the array,
+and the splices that changed the array.
+
+`template` is just a function that takes any thing and returns an `HTMLElement`
+
+
 ## jquery-ui
 
 Currently, this depends on jquery UI, which is not ideal,

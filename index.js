@@ -38,15 +38,50 @@ module.exports = function (array, template, list) {
         
         changes.forEach(function (ch) {
           a.splice.apply(a, ch)
+          emitter.emit(a, ch)
         })
-
-        array = a.slice()
-        onChange(a, changes);
       }
     }).disableSelection();
   }
 
   emitter.element = list
+  emitter.splice = function (index, del) {
+    var insert = [].slice.call(arguments, 2)
+    var args = [].slice.call(arguments)
+    _del = del || 0
+
+    function at(i) {
+      return list.children[i]
+    }
+
+    while(_del--)
+      list.removeChild(at(index))
+
+    insert.forEach(function (e, i) {
+      var t = template(e, index + i), a = at(index)
+      if(!t) return
+      if(a) list.insertBefore(t, a)
+      else  list.appendChild(t)
+    })
+
+    
+    var r = array.splice.apply(array, args)
+    emitter.emit('change', array, args)
+    return r
+  }
+
+  emitter.unshift = function (o) {
+    emitter.splice(0, 0, o)
+  }
+  emitter.push = function (o) {
+    emitter.splice(array.length, 0, o)
+  }
+  emitter.shift = function (o) {
+    return emitter.splice(0, 1)[0] || null
+  }
+  emitter.pop = function (o) {
+    emitter.splice(array.length - 1, 1)[0]
+  }
 
   return emitter
 }

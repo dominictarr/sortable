@@ -1,4 +1,6 @@
 
+var h = require('hyperscript')
+
 function template (s) {
    var e = document.createElement('h1')
    e.innerText = s
@@ -6,20 +8,35 @@ function template (s) {
 }
 
 var array = 'Apple,Banana,Cherry,Durian,ElderBerry'.split(',')
-var pre = document.createElement('pre')
+var pre = h('div')
 
 var emitter = require('./')(array, template).on('change', ch)
 
 function ch(v, ch) {
-  pre.innerText = 
-    JSON.stringify(v, null, 2) + '\n\nsplices:' 
-  + JSON.stringify(ch)
+  pre.innerHTML = ''
+  pre.appendChild(
+    h('div',
+      h('pre', JSON.stringify(v, null, 2)),
+      h('h3', 'splices'),
+      h('pre', JSON.stringify(ch))
+    )
+  )
 }
 
+
+document.body.appendChild(
+  h('div#content', 
+    emitter.element,
+    h('input', {onchange: function () {
+      if(this.value) {
+        emitter.push(this.value)
+        this.value = ''
+        this.select()
+      }
+    }}),
+    pre
+  )
+)
+
 ch(array, [])
-
-document.body.appendChild(emitter.element)
-
-document.body.appendChild(pre)
-
 

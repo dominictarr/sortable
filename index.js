@@ -11,15 +11,13 @@ module.exports = function (array, template, list) {
     return [].indexOf.call(e.parentNode.children, e)
   }
 
-  sortableList(array, template, function (ary, ch) {
-    emitter.emit('splice', ary, ch)
-  }, list) 
+  sortableList(array, template, list) 
 
   function length (a) {
     return 'function' === typeof a ? a.length() : a.length
   }
 
-  function sortableList(array, template, onChange, list) {
+  function sortableList(array, template, list) {
     array.forEach(function (e, i) {
       var el = e && template(e, i)
       if(el) list.appendChild(el)
@@ -41,7 +39,8 @@ module.exports = function (array, template, list) {
         
         changes.forEach(function (ch) {
           array.splice.apply(array, ch)
-          emitter.emit(array, ch)
+          emitter.emit('change', array, ch)
+          emitter.emit('splice', ch)
         })
       }
     }).disableSelection();
@@ -68,7 +67,8 @@ module.exports = function (array, template, list) {
     })
     
     var r = array.splice.apply(array, args)
-    emitter.emit('splice', array, args)
+    emitter.emit('change', array, args)
+    emitter.emit('splice', args)
     return r
   }
 

@@ -36,13 +36,12 @@ module.exports = function (array, template, list) {
         var to = index(u.item[0])
         //console.log('TO', to, 'FROM', from)
         //if(to > from) to
-        var a = array.slice()
         var v = array[from]
         var changes = [[from, 1], [to, 0, v]]
         
         changes.forEach(function (ch) {
-          a.splice.apply(a, ch)
-          emitter.emit(a, ch)
+          array.splice.apply(array, ch)
+          emitter.emit(array, ch)
         })
       }
     }).disableSelection();
@@ -67,7 +66,6 @@ module.exports = function (array, template, list) {
       if(a) list.insertBefore(t, a)
       else  list.appendChild(t)
     })
-
     
     var r = array.splice.apply(array, args)
     emitter.emit('splice', array, args)
@@ -91,6 +89,18 @@ module.exports = function (array, template, list) {
   }
   emitter.slice = function () {
     return array.slice.apply(array, arguments)
+  }
+
+  //this is just a hack, need better solution
+  emitter._reset = function (ary) {
+    list.innerHTML = '', array.length = 0
+    ary.forEach(function (e, i) {
+      var t = template(e, i)
+      if(!t) return
+      array[i] = e
+      list.appendChild(t)
+    })
+    return emitter
   }
 
   return emitter

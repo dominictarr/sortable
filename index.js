@@ -82,6 +82,9 @@ module.exports = function (array, template, list) {
   emitter.pop = function (o) {
     return emitter.splice(array.length - 1, 1)[0]
   }
+  emitter.length = function () {
+    return array.length
+  }
 
   return emitter
 }

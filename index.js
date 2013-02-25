@@ -15,8 +15,11 @@ module.exports = function (array, template, list) {
     emitter.emit('splice', ary, ch)
   }, list) 
 
+  function length (a) {
+    return 'function' === typeof a ? a.length() : a.length
+  }
+
   function sortableList(array, template, onChange, list) {
-    array = array.slice()
     array.forEach(function (e, i) {
       var el = e && template(e, i)
       if(el) list.appendChild(el)
@@ -72,19 +75,22 @@ module.exports = function (array, template, list) {
   }
 
   emitter.unshift = function (o) {
-    return emitter.splice(0, 0, o), array.length
+    return emitter.splice(0, 0, o), length(array)
   }
   emitter.push = function (o) {
-    return emitter.splice(array.length, 0, o), array.length
+    return emitter.splice(length(array), 0, o), length(array)
   }
   emitter.shift = function (o) {
     return emitter.splice(0, 1)[0] || null
   }
   emitter.pop = function (o) {
-    return emitter.splice(array.length - 1, 1)[0]
+    return emitter.splice(length(array) - 1, 1)[0]
   }
   emitter.length = function () {
-    return array.length
+    return length(array)
+  }
+  emitter.slice = function () {
+    return array.slice.apply(array, arguments)
   }
 
   return emitter

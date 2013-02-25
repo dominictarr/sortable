@@ -23,17 +23,41 @@ function ch(v, ch) {
   )
 }
 
+function button(name, fun) {
+  if(!fun) fun = name, name = null
+  return h('button', {onclick: fun}, name || fun.name || 'button')
+}
+
+var input
 
 document.body.appendChild(
   h('div#content', 
+    h('div',
+      input = h('input', {onchange: function () {
+        if(this.value) {
+  //        emitter.push(this.value)
+  //        this.value = ''
+          this.select()
+        }
+      }}),
+      button(function shift () {
+        input.value = emitter.shift()
+      }),
+      button(function unshift () {
+        if(input.value)
+          emitter.unshift(input.value)
+        input.value = ''
+      }),
+      button(function pop () {
+        input.value = emitter.pop()
+      }),
+      button(function push () {
+        if(input.value)
+          emitter.push(input.value)
+        input.value = ''
+      })
+    ),
     emitter.element,
-    h('input', {onchange: function () {
-      if(this.value) {
-        emitter.push(this.value)
-        this.value = ''
-        this.select()
-      }
-    }}),
     pre
   )
 )

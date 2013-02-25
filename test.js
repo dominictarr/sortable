@@ -10,7 +10,7 @@ function template (s) {
 var array = 'Apple,Banana,Cherry,Durian,ElderBerry'.split(',')
 var pre = h('div')
 
-var emitter = require('./')(array, template).on('change', ch)
+var emitter = require('./')(array, template).on('splice', ch)
 
 function ch(v, ch) {
   pre.innerHTML = ''

@@ -12,7 +12,7 @@ module.exports = function (array, template, list) {
   }
 
   sortableList(array, template, function (ary, ch) {
-    emitter.emit('change', ary, ch)
+    emitter.emit('splice', ary, ch)
   }, list) 
 
   function sortableList(array, template, onChange, list) {
@@ -26,11 +26,12 @@ module.exports = function (array, template, list) {
     
     $(list).sortable({
       start: function (e, u) {
-        console.log('START', from = index(u.item[0]))
+        from = index(u.item[0])
+        //console.log('START', from)
       },
       stop: function (e, u) {
         var to = index(u.item[0])
-        console.log('TO', to, 'FROM', from)
+        //console.log('TO', to, 'FROM', from)
         //if(to > from) to
         var a = array.slice()
         var v = array[from]
@@ -66,7 +67,7 @@ module.exports = function (array, template, list) {
 
     
     var r = array.splice.apply(array, args)
-    emitter.emit('change', array, args)
+    emitter.emit('splice', array, args)
     return r
   }
 

@@ -71,16 +71,16 @@ module.exports = function (array, template, list) {
   }
 
   emitter.unshift = function (o) {
-    emitter.splice(0, 0, o)
+    return emitter.splice(0, 0, o), array.length
   }
   emitter.push = function (o) {
-    emitter.splice(array.length, 0, o)
+    return emitter.splice(array.length, 0, o), array.length
   }
   emitter.shift = function (o) {
     return emitter.splice(0, 1)[0] || null
   }
   emitter.pop = function (o) {
-    emitter.splice(array.length - 1, 1)[0]
+    return emitter.splice(array.length - 1, 1)[0]
   }
 
   return emitter

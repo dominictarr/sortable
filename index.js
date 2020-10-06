@@ -1,7 +1,7 @@
-var $ = require('./ui')
-var EventEmitter = require('events').EventEmitter
-
 module.exports = function (array, template, list) {
+
+  var $ = require('./ui')
+  var EventEmitter = require('events').EventEmitter
 
   var emitter = new EventEmitter()
   if(!(list instanceof HTMLElement))
